@@ -63,6 +63,8 @@ public class SecurityConfig {
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
+                        .requestMatchers("/actuator/health").permitAll()
                         // Endpoints de clientes
                         .requestMatchers(HttpMethod.GET, "/api/clients/**").hasAnyRole("USER", "ADMIN", "VIEWER")
                         .requestMatchers(HttpMethod.POST, "/api/clients/**").hasAnyRole("USER", "ADMIN")

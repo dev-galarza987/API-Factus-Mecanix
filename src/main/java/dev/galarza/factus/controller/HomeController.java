@@ -2,39 +2,34 @@ package dev.galarza.factus.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
-@RestController
+@Controller
 @RequestMapping("/")
 @Tag(name = "Home", description = "Endpoint de bienvenida")
 public class HomeController {
 
     @GetMapping
-    @Operation(summary = "Página de bienvenida")
-    public ResponseEntity<Map<String, Object>> home() {
-        Map<String, Object> response = new HashMap<>();
-        response.put("aplicacion", "Factus - Sistema de Facturación Electrónica");
-        response.put("version", "1.0");
-        response.put("empresa", "Galarza TechCorp");
-        response.put("documentacion", "/swagger-ui.html");
-        response.put("impuestos", Map.of(
-                "IVA", "13%",
-                "IT", "3%"
-        ));
-        response.put("endpoints", Map.of(
-                "auth", "/api/auth",
-                "clients", "/api/clients",
-                "invoices", "/api/invoices",
-                "swagger", "/swagger-ui.html"
-        ));
+    @Operation(summary = "Página de bienvenida con UI")
+    public String home(Model model) {
+        model.addAttribute("appName", "Factus");
+        model.addAttribute("appDescription", "Sistema de Facturación Electrónica");
+        model.addAttribute("version", "1.0");
+        model.addAttribute("empresa", "Galarza TechCorp");
+        model.addAttribute("iva", "13%");
+        model.addAttribute("it", "3%");
+        model.addAttribute("year", LocalDateTime.now().getYear());
+        model.addAttribute("currentTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
 
-        return ResponseEntity.ok(response);
+        return "index";
     }
 }
+
+
 
