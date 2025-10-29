@@ -59,12 +59,13 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoints públicos
+                        // Endpoints públicos (sin autenticación)
+                        .requestMatchers("/", "/index", "/home").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-ui.html").permitAll()
-                        .requestMatchers("/").permitAll()
-                        .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico").permitAll()
-                        .requestMatchers("/actuator/health").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/api-docs/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/css/**", "/js/**", "/images/**", "/favicon.ico", "/webjars/**").permitAll()
+                        .requestMatchers("/actuator/health", "/actuator/info").permitAll()
+                        .requestMatchers("/error").permitAll()
                         // Endpoints de clientes
                         .requestMatchers(HttpMethod.GET, "/api/clients/**").hasAnyRole("USER", "ADMIN", "VIEWER")
                         .requestMatchers(HttpMethod.POST, "/api/clients/**").hasAnyRole("USER", "ADMIN")
